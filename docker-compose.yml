@@ -10,7 +10,7 @@ services:
       '--bind-address=0.0.0.0'
     ]
     environment:
-      MYSQL_ROOT_PASSWORD: 'YjrbfAjhtdth'
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: 'ProjectPracticeDB'
     ports:
       - '3306:3306'
@@ -23,12 +23,13 @@ services:
   backend:
     image: gradle:7.5.1-jdk17
     container_name: backend
-    entrypoint: |
-      /bin/bash -c "
+    entrypoint: [
+      '/bin/bash -c "
         if [ ! -x \"$(command -v git)\" ]; then apk add --no-cache git; fi
         if [ ! -d \"project\" ]; then git clone https://github.com/ProjectPracticeService/pp-backend.git project; fi
         if [ -f \"project/gradlew\" ]; then (cd project; gradle bootRun --no-daemon --info); fi
-      "
+      "'
+    ]
     depends_on:
       - db
     ports:
