@@ -17,8 +17,6 @@ services:
       - '8086:3306'
     expose:
       - '8086'
-    volumes:
-      - ./mysql:/var/lib/mysql:rw,delegated
     restart: always  
 
   backend:
