@@ -4,20 +4,21 @@ services:
   db:
     image: mysql/mysql-server:latest
     container_name: db
-    cap_add:
-      - SYS_NICE
     command: [
       '--bind-address=0.0.0.0'
     ]
+    cap_add:
+      - SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: 'ProjectPracticeDB'
+      MYSQL_ROOT_HOST: '172.18.0.1'
     ports:
-      - '3306:3306'
+      - '8086:3306'
     expose:
-      - '3306'
+      - '8086'
     volumes:
-      - db:/var/lib/mysql
+      - ./mysql:/var/lib/mysql:rw,delegated
     restart: always  
 
   backend:
@@ -31,7 +32,3 @@ services:
       - '8080'
     restart: always
 
-volumes:
-  db:
-    driver: local
- 
