@@ -2,31 +2,30 @@ version: "3.8"
 
 services:
   db:
-    image: mysql/mysql-server:latest
+    image: mysql
     container_name: db
-    command: [
-      '--bind-address=0.0.0.0'
-    ]
-    cap_add:
-      - SYS_NICE
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-      MYSQL_DATABASE: 'ProjectPracticeDB'
-      MYSQL_ROOT_HOST: '172.18.0.1'
+      MYSQL_DATABASE: $MYSQL_DATABASE
     ports:
-      - '8086:3306'
-    expose:
-      - '8086'
-    restart: always  
+      - 3306:3306
+    restart: always
 
   backend:
     image: ghcr.io/projectpracticeservice/server/image:latest
     container_name: backend
+    environment:
+      MYSQL_USERNAME: $MYSQL_USERNAME
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_HOST: $MYSQL_HOST
+      MYSQL_PORT: $MYSQL_PORT
+      JWT_SECRET_ACCESS: $JWT_SECRET_ACCESS
+      JWT_SECRET_REFRESH: $JWT_SECRET_REFRESH
     depends_on:
       - db
+    links:
+      - db:mysql
     ports:
-      - '8080:8080'
-    expose:
-      - '8080'
+      - 9090:9090
     restart: always
-
