@@ -27,5 +27,5 @@ services:
     links:
       - db:mysql
     ports:
-      - 9090:9090
+      - 0.0.0.0:9090:9090
     restart: always
